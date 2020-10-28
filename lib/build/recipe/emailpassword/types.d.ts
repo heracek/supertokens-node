@@ -1,4 +1,4 @@
-import * as express from 'express';
+import * as express from "express";
 export declare type TypeInput = {
     signUpFeature?: TypeInputSignUp;
     signInFeature?: TypeInputSignIn;

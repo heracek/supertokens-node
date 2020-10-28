@@ -212,9 +212,9 @@ export default class SessionRecipe extends RecipeModule {
             let antiCsrfToken = getAntiCsrfTokenFromHeaders(req);
 
             if (doAntiCsrfCheck === undefined) {
-                let method = normaliseHttpMethod(req.method);
-                doAntiCsrfCheck = method !== "get";
+                doAntiCsrfCheck = normaliseHttpMethod(req.method) !== "get";
             }
+
             let response = await SessionFunctions.getSession(this, accessToken, antiCsrfToken, doAntiCsrfCheck);
             if (response.accessToken !== undefined) {
                 setFrontTokenInHeaders(

@@ -23,5 +23,5 @@ export async function handleRefreshAPI(
     next: NextFunction
 ) {
     await recipeInstance.refreshSession(request, response);
-    return send200Response(response, {});
+    send200Response(response, {});
 }
