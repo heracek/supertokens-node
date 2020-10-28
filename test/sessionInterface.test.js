@@ -12,16 +12,9 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-import { Response, NextFunction, Request } from "express";
-import SessionRecipe from "./sessionRecipe";
-import { send200Response } from "../../utils";
 
-export async function handleRefreshAPI(
-    recipeInstance: SessionRecipe,
-    request: Request,
-    response: Response,
-    next: NextFunction
-) {
-    await recipeInstance.refreshSession(request, response);
-    return send200Response(response, {});
-}
+/**
+ * TODO: By default the signup session should work
+ * TODO: If createNewSession has been overridden, then that should be used during signup and signin
+ *
+ */

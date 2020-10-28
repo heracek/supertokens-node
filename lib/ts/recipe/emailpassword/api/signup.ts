@@ -17,6 +17,7 @@ import Recipe from "../recipe";
 import { Request, Response, NextFunction } from "express";
 import { normaliseEmail } from "../utils";
 import { FORM_FIELD_EMAIL_ID, FORM_FIELD_PASSWORD_ID } from "../constants";
+import { send200Response } from "../../../utils";
 
 export async function signUpAPI(recipeInstance: Recipe, req: Request, res: Response, next: NextFunction) {
     // Logic as per https://github.com/supertokens/supertokens-node/issues/21#issuecomment-710423536
@@ -41,7 +42,18 @@ export async function signUpAPI(recipeInstance: Recipe, req: Request, res: Respo
     );
 
     // step 5
-    // TODO: Create a new session using the Session recipe and return OK
+    let tokens = await recipeInstance.config.sessionInterface.createNewSession(user.id, "SIGN_UP", req, res);
+    let responseJson = {
+        status: "OK",
+        user,
+    };
+    if (tokens !== undefined) {
+        responseJson = {
+            ...responseJson,
+            ...tokens,
+        };
+    }
+    return send200Response(res, responseJson);
 }
 
 async function validateFormFieldsOrThrowError(

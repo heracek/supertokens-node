@@ -12,17 +12,20 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
+import * as express from "express";
 
 export type TypeInput = {
     signUpFeature?: TypeInputSignUp;
     signInFeature?: TypeInputSignIn;
     resetPasswordUsingTokenFeature?: TypeInputResetPasswordUsingTokenFeature;
+    sessionInterface?: TypeInputSessionInterface;
 };
 
 export type TypeNormalisedInput = {
     signUpFeature: TypeNormalisedInputSignUp;
     signInFeature: TypeNormalisedInputSignIn;
     resetPasswordUsingTokenFeature: TypeNormalisedInputResetPasswordUsingTokenFeature;
+    sessionInterface: TypeNormalisedInputSessionInterface;
 };
 
 export type TypeInputSignUp = {
@@ -71,6 +74,28 @@ export type TypeNormalisedInputResetPasswordUsingTokenFeature = {
         id: "password";
         validate: (value: string) => Promise<string | undefined>;
     }[];
+};
+
+export type TypeInputSessionInterface = {
+    createNewSession?: (
+        userId: string,
+        from: "SIGN_UP" | "SIGN_IN",
+        req: express.Request,
+        res: express.Response
+    ) => Promise<any>;
+    verifySession?: (req: express.Request, res: express.Response) => Promise<string>;
+    revokeSession?: (userId: string, req: express.Request, res: express.Response) => void;
+};
+
+export type TypeNormalisedInputSessionInterface = {
+    createNewSession: (
+        userId: string,
+        from: "SIGN_UP" | "SIGN_IN",
+        req: express.Request,
+        res: express.Response
+    ) => Promise<any>;
+    verifySession: (req: express.Request, res: express.Response) => Promise<string>;
+    revokeSession: (userId: string, req: express.Request, res: express.Response) => void;
 };
 
 export type User = {

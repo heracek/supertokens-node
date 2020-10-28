@@ -12,16 +12,25 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-import { Response, NextFunction, Request } from "express";
-import SessionRecipe from "./sessionRecipe";
-import { send200Response } from "../../utils";
 
-export async function handleRefreshAPI(
-    recipeInstance: SessionRecipe,
-    request: Request,
-    response: Response,
-    next: NextFunction
-) {
-    await recipeInstance.refreshSession(request, response);
-    return send200Response(response, {});
+import * as express from "express";
+import Session from "../session";
+
+export async function createNewSession(
+    userId: string,
+    from: "SIGN_UP" | "SIGN_IN",
+    req: express.Request,
+    res: express.Response
+): Promise<any> {
+    await Session.createNewSession(res, userId, {}, {});
+}
+
+export async function verifySession(req: express.Request, res: express.Response): Promise<string> {
+    let session = await Session.getSession(req, res);
+    return session.getUserId();
+}
+
+export async function revokeSession(userId: string, req: express.Request, res: express.Response) {
+    let session = await Session.getSession(req, res);
+    await session.revokeSession();
 }

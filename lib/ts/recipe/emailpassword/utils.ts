@@ -23,6 +23,8 @@ import {
     TypeNormalisedInputSignIn,
     TypeInputResetPasswordUsingTokenFeature,
     TypeNormalisedInputResetPasswordUsingTokenFeature,
+    TypeInputSessionInterface,
+    TypeNormalisedInputSessionInterface,
 } from "./types";
 import { NormalisedAppinfo } from "../../types";
 import { FORM_FIELD_EMAIL_ID, FORM_FIELD_PASSWORD_ID } from "./constants";
@@ -30,6 +32,7 @@ import {
     getResetPasswordURL as defaultGetResetPasswordURL,
     createAndSendCustomEmail as defaultCreateAndSendCustomEmail,
 } from "./passwordResetFunctions";
+import * as defaultSessionInterface from "./sessionInterface";
 
 export function validateAndNormaliseUserInput(
     recipeInstance: Recipe,
@@ -56,10 +59,44 @@ export function validateAndNormaliseUserInput(
         config === undefined ? undefined : config.resetPasswordUsingTokenFeature
     );
 
+    let sessionInterface = validateAndNormaliseSessionInteraceConfig(
+        recipeInstance,
+        appInfo,
+        config === undefined ? undefined : config.sessionInterface
+    );
+
     return {
         signUpFeature,
         signInFeature,
         resetPasswordUsingTokenFeature,
+        sessionInterface,
+    };
+}
+
+function validateAndNormaliseSessionInteraceConfig(
+    recipeInstance: Recipe,
+    appInfo: NormalisedAppinfo,
+    config?: TypeInputSessionInterface
+): TypeNormalisedInputSessionInterface {
+    let createNewSession =
+        config === undefined || config.createNewSession === undefined
+            ? defaultSessionInterface.createNewSession
+            : config.createNewSession;
+    createNewSession;
+    let verifySession =
+        config === undefined || config.verifySession === undefined
+            ? defaultSessionInterface.verifySession
+            : config.verifySession;
+
+    let revokeSession =
+        config === undefined || config.revokeSession === undefined
+            ? defaultSessionInterface.revokeSession
+            : config.revokeSession;
+
+    return {
+        createNewSession,
+        verifySession,
+        revokeSession,
     };
 }
 

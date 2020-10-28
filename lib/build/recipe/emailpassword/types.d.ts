@@ -1,12 +1,15 @@
+import * as express from 'express';
 export declare type TypeInput = {
     signUpFeature?: TypeInputSignUp;
     signInFeature?: TypeInputSignIn;
     resetPasswordUsingTokenFeature?: TypeInputResetPasswordUsingTokenFeature;
+    sessionInterface?: TypeInputSessionInterface;
 };
 export declare type TypeNormalisedInput = {
     signUpFeature: TypeNormalisedInputSignUp;
     signInFeature: TypeNormalisedInputSignIn;
     resetPasswordUsingTokenFeature: TypeNormalisedInputResetPasswordUsingTokenFeature;
+    sessionInterface: TypeNormalisedInputSessionInterface;
 };
 export declare type TypeInputSignUp = {
     disableDefaultImplementation?: boolean;
@@ -55,6 +58,16 @@ export declare type TypeNormalisedInputResetPasswordUsingTokenFeature = {
         id: "password";
         validate: (value: string) => Promise<string | undefined>;
     }[];
+};
+export declare type TypeInputSessionInterface = {
+    createNewSession?: (userId: string, from: "SIGN_UP" | "SIGN_IN", req: express.Request, res: express.Response) => Promise<any>;
+    verifySession?: (req: express.Request, res: express.Response) => Promise<string>;
+    revokeSession?: (userId: string, req: express.Request, res: express.Response) => void;
+};
+export declare type TypeNormalisedInputSessionInterface = {
+    createNewSession: (userId: string, from: "SIGN_UP" | "SIGN_IN", req: express.Request, res: express.Response) => Promise<any>;
+    verifySession: (req: express.Request, res: express.Response) => Promise<string>;
+    revokeSession: (userId: string, req: express.Request, res: express.Response) => void;
 };
 export declare type User = {
     id: string;
